@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SAVE IT!</string>
+    <string name="unsaved_link_message">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="delete_all_dialog">Do You Want To delete All</string>
+    <string name="delete_all_button">Delete</string>
+    <string name="cancel">cancel</string>
+</resources>

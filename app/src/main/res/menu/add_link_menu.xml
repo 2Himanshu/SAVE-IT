@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<item
+    android:id="@+id/save"
+    android:icon="@drawable/tick"
+    app:showAsAction="always"
+    android:title="save" />
+
+<item
+    android:title="Delete"
+    app:showAsAction="never"
+    android:id="@+id/delete_add_link"/>
+
+    <item
+        android:title="copy"
+        app:showAsAction="never"
+        android:id="@+id/copy_text"
+        />
+</menu>
