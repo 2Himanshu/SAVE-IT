@@ -8,6 +8,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.app.ShareCompat;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -152,9 +153,29 @@ public class Add_Link extends AppCompatActivity implements LoaderManager.LoaderC
                 copyTextToClipBoard();
                 return true;
 
+            case R.id.share:
+                shareText();
+                return true;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void shareText() {
+
+        TextView linkId = findViewById(R.id.link);
+
+        String linkText = linkId.getText().toString();
+        String mimeType = "text/plain";
+        ShareCompat.IntentBuilder.from(this)
+                .setChooserTitle("Select App to Share")
+                .setType(mimeType)
+                .setText(linkText)
+                .startChooser();
+
+    }
+
 
     private void copyTextToClipBoard() {
         TextView linkId = findViewById(R.id.link);
@@ -162,6 +183,7 @@ public class Add_Link extends AppCompatActivity implements LoaderManager.LoaderC
         ClipData data = ClipData.newPlainText("text",linkId.getText().toString());
         clipboardManager.setPrimaryClip(data);
         Toast.makeText(getApplicationContext(), "Copied!", Toast.LENGTH_SHORT).show();
+
     }
 
     private void showDeleteDialog() {
@@ -188,9 +210,18 @@ public class Add_Link extends AppCompatActivity implements LoaderManager.LoaderC
     }
 
     private void deleteLink() {
+        String platFormName = mPlatFormName.getText().toString();
+        String platFormLink = mLink.getText().toString();
+        ContentValues values = new ContentValues();
+        values.put(LinkEntry.PLATFORM_NAME,platFormName);
+        values.put(LinkEntry.PLATFORM_LINK,platFormLink);
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        long id = db.insert(LinkEntry.RECYCLE_TABLE,null,values);
         getContentResolver().delete(currentUri,null,null);
         finish();
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -273,6 +304,10 @@ public class Add_Link extends AppCompatActivity implements LoaderManager.LoaderC
 
             MenuItem copytext = menu.findItem(R.id.copy_text);
             copytext.setVisible(false);
+
+            MenuItem shareText = menu.findItem(R.id.share);
+            shareText.setVisible(false);
+
         }
         return true;
     }

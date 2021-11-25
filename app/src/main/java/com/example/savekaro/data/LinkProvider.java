@@ -18,10 +18,14 @@ public class LinkProvider extends ContentProvider {
     private static UriMatcher mUriMacther = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int LINKS = 100;
     private static final int LINK_ID = 101;
+    private static final int RECYCLE_LINK = 200;
+    private static final int RECYCLE_LINK_ID = 201;
 
     static {
         mUriMacther.addURI(LinkContract.CONTENT_AUTHORITY,LinkContract.PATH_SET,LINKS);
         mUriMacther.addURI(LinkContract.CONTENT_AUTHORITY,LinkContract.PATH_SET+"/#",LINK_ID);
+        mUriMacther.addURI(LinkContract.CONTENT_AUTHORITY,LinkContract.RECYCLE_PATH,RECYCLE_LINK);
+        mUriMacther.addURI(LinkContract.CONTENT_AUTHORITY,LinkContract.RECYCLE_PATH+"/#",RECYCLE_LINK_ID);
     }
     @Override
     public boolean onCreate() {
@@ -44,6 +48,10 @@ public class LinkProvider extends ContentProvider {
                 s = "_id=?";
                 strings1 = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor = db.query(LinkEntry.TABLE_NAME,strings,s,strings1,null,null,s1);
+                break;
+
+            case RECYCLE_LINK:
+                cursor =  db.query(LinkEntry.RECYCLE_TABLE,strings,s,strings1,s1,null,null,s1);
                 break;
 
             default:
@@ -72,18 +80,35 @@ public class LinkProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        long id = db.insert(LinkEntry.TABLE_NAME,null,contentValues);
+        long id;
+        if(uri.getPath()=="recycle"){
+            id = db.insert(LinkEntry.RECYCLE_TABLE,null,contentValues);
+            if(id==-1){
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+            }
+            getContext().getContentResolver().notifyChange(uri,null);
+            return ContentUris.withAppendedId(uri,id);
+        }
+        else{
+            id = db.insert(LinkEntry.TABLE_NAME,null,contentValues);
+            if(id==-1){
+                Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+            }
+            getContext().getContentResolver().notifyChange(uri,null);
+            return ContentUris.withAppendedId(uri,id);
+        }
 
-        if(id==-1){
-            Toast.makeText(getContext(), "Failed", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-        else
-        {
-            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
-        }
-        getContext().getContentResolver().notifyChange(uri,null);
-        return ContentUris.withAppendedId(uri,id);
+
+
+
     }
 
     @Override
@@ -106,10 +131,10 @@ public class LinkProvider extends ContentProvider {
         }
         getContext().getContentResolver().notifyChange(uri,null);
         if(rowDeleted==0){
-            Toast.makeText(getContext(), "failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Not Deleted", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "deleted", Toast.LENGTH_SHORT).show();
         }
         return rowDeleted;
     }

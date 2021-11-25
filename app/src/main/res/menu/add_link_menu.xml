@@ -8,6 +8,13 @@
     app:showAsAction="always"
     android:title="save" />
 
+    <item
+        android:id="@+id/share"
+        android:title="share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="ifRoom"
+        />
+
 <item
     android:title="Delete"
     app:showAsAction="never"
@@ -18,4 +25,6 @@
         app:showAsAction="never"
         android:id="@+id/copy_text"
         />
+
+
 </menu>

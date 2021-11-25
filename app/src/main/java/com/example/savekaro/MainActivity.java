@@ -1,5 +1,7 @@
 package com.example.savekaro;
 
+import static com.example.savekaro.data.LinkContract.LinkEntry.RECYCLE_CONTENT_URI;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-
         ListView listView = findViewById(R.id.listView);
 
         listView.setAdapter(mAdapter);
@@ -109,8 +110,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.delete_all_pets:
                 showDeleteAllLinks();
                 return true;
+
+            case R.id.recyle:
+                recycleItem();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void recycleItem() {
+        Intent intent = new Intent(MainActivity.this,recycle_activity.class);
+        startActivity(intent);
     }
 
     private void showDeleteAllLinks() {

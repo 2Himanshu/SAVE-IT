@@ -10,14 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaveKaro">
         <activity
+            android:name=".recycle_activity"
+            android:label="Recycle Bin"
+            android:exported="false" />
+        <activity
             android:name=".Add_Link"
             android:exported="false"
-            android:parentActivityName=".MainActivity"
-            >
-<!--            <meta-data-->
-<!--                android:name="andoid.support.PARENT_ACTIVITY"-->
-<!--                android:value=".MainActivity"-->
-<!--                />-->
+            android:parentActivityName=".MainActivity">
+
+            <!-- <meta-data -->
+            <!-- android:name="andoid.support.PARENT_ACTIVITY" -->
+            <!-- android:value=".MainActivity" -->
+            <!-- /> -->
         </activity>
         <activity
             android:name=".MainActivity"
@@ -28,11 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.example.savekaro"
             android:name=".data.LinkProvider"
-            android:exported="true"
-            />
+            android:authorities="com.example.savekaro"
+            android:exported="true" />
     </application>
 
 </manifest>

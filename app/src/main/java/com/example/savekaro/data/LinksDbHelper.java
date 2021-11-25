@@ -8,7 +8,7 @@ import com.example.savekaro.data.LinkContract.LinkEntry;
 public class LinksDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Account_Links.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     public LinksDbHelper(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
@@ -20,6 +20,13 @@ public class LinksDbHelper extends SQLiteOpenHelper {
                 +LinkEntry.PLATFORM_NAME + " TEXT NOT NULL ,"
                 +LinkEntry.PLATFORM_LINK+ " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_TABLE);
+
+        String RECYCLE_CREATE_TABLE = "CREATE TABLE "+LinkEntry.RECYCLE_TABLE+ " ("
+                + LinkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                +LinkEntry.PLATFORM_NAME + " TEXT NOT NULL ,"
+                +LinkEntry.PLATFORM_LINK+ " TEXT NOT NULL);";
+        db.execSQL(RECYCLE_CREATE_TABLE);
+
     }
 
     @Override
